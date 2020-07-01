@@ -2,82 +2,108 @@ class Snake{
    
 
     constructor(){
+      this.body = [];
+      this.body[0] = createVector(floor(w/2), floor(h/2));
+      this.xdirec = 0;
+      this.ydirec = 0;
+      this.len = 0;
 
-      this.x = 0;
-      this.y = 0;
-      this.xSpeed = scal;
-      this.ySpeed = 0;
     }
 
+    setDirec(xChange, yChange){
+      this.xdirec = xChange
+      this.ydirec = yChange
 
-    chomp(x, y){
+    }
+/*
+    update(){
+      let head = this.body[this.body.length-1].copy() //Copies the head to be the same as the previous value
+      this.body.shift //Shifts all elements back by 1 position
+      head.x += this.xdirec //Adding wherever the head was facing to the element
+      head.y += this.ydirec //Adding whether the head was going up or down to the element
+      //this.body.splice(this.body.length-1,this.len)
 
-      var objDist = dist(this.x, this.y, x, y)
+      this.body.push(head) //Pushes newest value into array
 
-      //print(objDist)
+    }
+    */
 
-      if(objDist < 19){
+    update() {
+      let head = this.body[this.body.length-1].copy();
+    this.body.shift();
+    head.x += this.xdirec;
+    head.y += this.ydirec;
+    this.body.push(head);
+    }
+/*
+    grow(){
+      let head = this.body[this.body.length-1].copy() //Copies the head to be the same as the previous one
+      this.len ++;
+      this.body.push(head); //Pushes new value of the head
+    }
+*/
+    grow() {
+      let head = this.body[this.body.length-1].copy();
+    this.len++;
+    this.body.push(head);
+  }
 
+    endGame() {
+      let x = this.body[this.body.length-1].x;
+    let y = this.body[this.body.length-1].y;
+    if(x > w-1 || x < 0 || y > h-1 || y < 0) {
+       return true;
+    }
+    for(let i = 0; i < this.body.length-1; i++) {
+        let part = this.body[i];
+      if(part.x == x && part.y == y) {
+          return true;
+      }
+    }
+    return false;
+  }
+  /*
+    eat(pos){
+      let x = this.body[this.body.length-1].x
+      let y = this.body[this.body.length-1].y
+
+      if(x == pos.x && y == pos.y){ //Checking if the food position is the same position as the head
+        this.grow //Growing the body
         return true;
-      } else if(objDist > 2){
-        return false
       }
-    }
 
-
-    changeDirection(xChange, yChange){
+      return false //If the if statement is not true, return false
       
- 
-
-
-
-      this.xSpeed = xChange * scal
-      this.ySpeed = yChange * scal
-
     }
+    */
 
-    reset(){
-
-      snake.x = 180;
-      snake.y = 180;
-      snake.xSpeed = 0;
-      snake.ySpeed = 0;
-
-
-    }
-
-
-    display(){
-
-      if(score === body.length){
-        for(var i; i < body.length; i++){
-
-          body[i] = body[i+1];
-       }
+     eat(pos) {
+        let x = this.body[this.body.length-1].x;
+      let y = this.body[this.body.length-1].y;
+      if(x == pos.x && y == pos.y) {
+        this.grow();
+        return true;
       }
-
-      body[score-1] = /*rect(this.x, this.y, 20,20)*/ createVector(this.x, this.y)
-
-
-
-
-      fill(255)
-
-      for(var i; i < body.length; i++){
-        fill(255)
-
-        rect(body[i].x, body[i].y, 20, 20);
-      }
-      
-      this.x = this.x + this.xSpeed
-      this.y = this.y + this.ySpeed
-
-      rect(this.x, this.y, scal,scal)
+      return false;
     }
 
+    /*
+    show(){ //Displaying the this.body array
+      for(let i = 0; i < this.body.length; i++){
 
+        fill(0); //Im pretty sure this is a black color, for the body
+        noStroke();
+        rect(this.body[i].x, this.body[i].y, 1, 1)//Showing all the rectangles in the array, since it is a for loop
 
-
+      }
+    }
+    */
+   show() {
+    for(let i = 0; i < this.body.length; i++) {
+      fill(0);
+    noStroke();
+    rect(this.body[i].x, this.body[i].y, 1, 1)
+  }
+}
 
   }
-  

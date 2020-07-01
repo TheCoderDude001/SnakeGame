@@ -1,69 +1,75 @@
 var snake, food;
-var score = 0;
+var w,h;
 var scal = 20;
-var body = []
 
-cols = 20;
-rows = 20;
 
 function setup() {
   createCanvas(400,400);
 
-  frameRate(15)
+
+  w = floor(width/scal); //Setting number of columns
+  h = floor(height/scal); //Setting the number of rows
+  frameRate(5)
+
 
   snake = new Snake();
-  food = new Food();
 
-  food.setLocation();
-
+  setFLocation();
 
 
 
 }
 
-function draw() {
-  background(50);  
 
-
-  snake.display();
-  food.display();
-  if(snake.chomp(food.x, food.y)){
-
-    food.setLocation();
-
-    score = score + 1;
-
-  }
-
-
-
-
-
+function setFLocation(){
+  let x = floor(random(w)) //Picking a random column
+  let y = floor(random(h)) //Picking a random row
+   
+  food = createVector(x,y);
 }
 
 function keyPressed(){
 
-  if(keyCode === 	82){
-    snake.reset();
+  if(keyCode === LEFT_ARROW){
+    snake.setDirec(-1,0);
+  } else if(keyCode === RIGHT_ARROW){
+    snake.setDirec(1,0);
+  } else if(keyCode === DOWN_ARROW){
+    snake.setDirec(0,1);
+  } else if(keyCode === UP_ARROW){
+    snake.setDirec(0,-1);
+  } else if(key == ''){//Control for checking for proper fuctioning of the snake functions
+    snake.grow();
   }
 
 
-  if(keyCode === 	UP_ARROW){
-    snake.changeDirection(0,-1); 
+}
+
+
+function draw() {
+  
+  scale(scal);
+  background(220);
+
+  if(snake.eat(food)){
+
+    setFLocation();
+
   }
 
+  snake.update();
+  snake.show();
 
-  else if(keyCode === 	DOWN_ARROW){
-    snake.changeDirection(0,1); 
+  if (snake.endGame()) {
+    print("END GAME");
+    background(255, 0, 0);
+    noLoop();
   }
 
+  noStroke();
+  fill(0,255,0) //Sets green
+  rect(food.x, food.y, 1, 1); //Displays Food
 
-  else if(keyCode === 	RIGHT_ARROW){
-    snake.changeDirection(1,0); 
-  }
 
 
-  else if(keyCode === 	LEFT_ARROW){
-    snake.changeDirection(-1,0); 
-  }
 }
